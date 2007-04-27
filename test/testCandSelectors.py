@@ -1,4 +1,3 @@
-#import FWCore.ParameterSet.Config as cms
 from FWCore.ParameterSet.Config import *
 
 process = Process("CandSelectorTest")
