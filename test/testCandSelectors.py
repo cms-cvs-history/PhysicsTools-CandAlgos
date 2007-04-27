@@ -70,8 +70,7 @@ process.out = OutputModule("PoolOutputModule",
   fileName = untracked.string("cands.root")
 )
 
-process.printEventNumber = OutputModule("AsciiOutputModule",
-)
+process.printEventNumber = OutputModule("AsciiOutputModule")
 
 process.select = Path(
   process.largestPtCands *
