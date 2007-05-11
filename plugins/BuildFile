@@ -10,7 +10,9 @@
 <library file=EtaPtMinCandViewSelector.cc></library>
 <library file=EtaPtMinPdgIdCandSelector.cc></library>
 <library file=PdgIdCandSelector.cc></library>
-<library file=PdgIdAndStatusCandSelector.cc></library>
+<library file=PdgIdAndStatusCandSelector.cc>
+  <use name=DataFormats/HepMCCandidate>
+</library>
 <library file=PdgIdCandRefVectorSelector.cc></library>
 <library file=MassRangeCandCombiner.cc></library>
 <library file=MassRangeCandShallowCloneCombiner.cc></library>
