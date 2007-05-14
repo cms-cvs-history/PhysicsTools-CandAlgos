@@ -4,8 +4,9 @@
  *
  * \author: Luca Lista, INFN
  *
+ * *WARNING*: this  is a patched version for 1.3.X only
  */
-#include "DataFormats/Candidate/interface/CompositeRefCandidate.h"
+#include "DataFormats/HepMCCandidate/interface/HepMCCandidate.h"
 #include "PhysicsTools/UtilAlgos/interface/ObjectSelector.h"
 
 namespace helper {
@@ -30,13 +31,16 @@ namespace helper {
   private:
     reco::CandidateRef add( reco::CandidateRefProd cands, const reco::Candidate & c ) {
       using namespace reco;
-      std::auto_ptr<CompositeRefCandidate> cmp( new CompositeRefCandidate( c ) );
-      CompositeRefCandidate * p = cmp.get();
+      reco::Candidate * clone = c.clone();
+      reco::GenParticleCandidate * gp = dynamic_cast<reco::GenParticleCandidate *>( clone );
+      assert( gp != 0 );
+      gp->clearDaughters();
       CandidateRef ref( cands, selCands_->size() );
-      selCands_->push_back( cmp );
+      std::auto_ptr<Candidate> ap( gp );
+      selCands_->push_back( ap );
       size_t n = c.numberOfDaughters(); 
       for( size_t i = 0; i < n; ++ i )
-	p->addDaughter( add( cands, * c.daughter( i ) ) );
+	gp->addDaughter( add( cands, * c.daughter( i ) ) );
       return ref;
     }
     std::auto_ptr<reco::CandidateCollection> selCands_;
