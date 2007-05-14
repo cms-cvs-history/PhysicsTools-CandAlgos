@@ -13,6 +13,9 @@
 <library file=PdgIdAndStatusCandSelector.cc>
   <use name=DataFormats/HepMCCandidate>
 </library>
+<library file=PdgIdAndStatusCandDecaySelector.cc>
+  <use name=DataFormats/HepMCCandidate>
+</library>
 <library file=PdgIdCandRefVectorSelector.cc></library>
 <library file=MassRangeCandCombiner.cc></library>
 <library file=MassRangeCandShallowCloneCombiner.cc></library>

@@ -1,9 +1,10 @@
-/* \class PdgIdAndStatusCandSelector
+/* \class PdgIdAndStatusCandDecaySelector
  * 
  * Candidate Selector based on a pdgId set
+ * cloning the full decay chain
  * Usage:
  * 
- * module leptons = PdgIdAndStatusCandSelector {
+ * module leptons = PdgIdAndStatusCandDecaySelector {
  *   InputTag src = myCollection
  *   vint32 pdgId = { 11, 13 }
  *   vint32 status = { 1 }
@@ -18,6 +19,7 @@
 #include "PhysicsTools/UtilAlgos/interface/PdgIdSelector.h"
 #include "PhysicsTools/UtilAlgos/interface/StatusSelector.h"
 #include "DataFormats/Candidate/interface/Candidate.h"
+#include "PhysicsTools/CandAlgos/interface/CandDecaySelector.h"
 
 typedef SingleObjectSelector<
           reco::CandidateCollection,
@@ -25,6 +27,6 @@ typedef SingleObjectSelector<
             PdgIdSelector<reco::Candidate>,
             StatusSelector<reco::Candidate>
           >
-        > PdgIdAndStatusCandSelector;
+        > PdgIdAndStatusCandDecaySelector;
 
-DEFINE_FWK_MODULE( PdgIdAndStatusCandSelector );
+DEFINE_FWK_MODULE( PdgIdAndStatusCandDecaySelector );
