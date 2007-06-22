@@ -18,7 +18,7 @@ namespace helper {
     template<typename I>
     void cloneAndStore( const I & begin, const I & end, edm::Event & evt ) {
       using namespace reco;
-      CandidateRefProd cands = evt.getRefBeforePut<CandidateCollection>();
+      CandidateRefProd cands = evt.template getRefBeforePut<CandidateCollection>();
       for( I i = begin; i != end; ++ i )
 	add( cands, * * i );
     }
