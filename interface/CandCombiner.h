@@ -7,9 +7,9 @@
  *
  * \author Luca Lista, INFN
  *
- * \version $Revision: 1.7 $
+ * \version $Revision: 1.8 $
  *
- * $Id: CandCombiner.h,v 1.7 2007/06/27 08:56:26 llista Exp $
+ * $Id: CandCombiner.h,v 1.8 2007/07/09 08:54:11 llista Exp $
  *
  */
 #include "FWCore/Framework/interface/EDProducer.h"
@@ -59,7 +59,7 @@ namespace reco {
       combiner_( reco::modules::make<Selector>( cfg ), 
 		 reco::modules::make<PairSelector>( cfg ),
 		 Setup( cfg ), 
-		 true, 
+		 checkCharge( cfg ),
 		 dauCharge_ ) {
 		 }
       /// destructor
@@ -67,25 +67,33 @@ namespace reco {
 
     private:
     /// process an event
-    void produce( edm::Event& evt, const edm::EventSetup& es ) {
-      Init::init( combiner_.setup(), es );
-      int n = labels_.size();
-      std::vector<edm::Handle<reco::CandidateCollection> > colls( n );
-      for( int i = 0; i < n; ++i )
-      evt.getByLabel( labels_[ i ].tag_, colls[ i ] );
+      void produce( edm::Event& evt, const edm::EventSetup& es ) {
+	Init::init( combiner_.setup(), es );
+	int n = labels_.size();
+	std::vector<edm::Handle<reco::CandidateCollection> > colls( n );
+	for( int i = 0; i < n; ++i )
+	  evt.getByLabel( labels_[ i ].tag_, colls[ i ] );
+	
+	std::vector<reco::CandidateRefProd> cv;
+	for( std::vector<edm::Handle<reco::CandidateCollection> >::const_iterator c = colls.begin();
+	     c != colls.end(); ++ c )
+	  cv.push_back( reco::CandidateRefProd( * c ) );
+	
+	evt.put( combiner_.combine( cv ) );
+      }
       
-      std::vector<reco::CandidateRefProd> cv;
-      for( std::vector<edm::Handle<reco::CandidateCollection> >::const_iterator c = colls.begin();
-	   c != colls.end(); ++ c )
-      cv.push_back( reco::CandidateRefProd( * c ) );
-      
-      evt.put( combiner_.combine( cv ) );
-    }
-    
-    /// combiner utility
-    ::CandCombiner<Selector, PairSelector, Cloner, Setup> combiner_;
+      /// combiner utility
+      ::CandCombiner<Selector, PairSelector, Cloner, Setup> combiner_;
+      bool checkCharge( const edm::ParameterSet & cfg ) const {
+	using namespace std;
+	const string par( "checkCharge" );
+	vector<string> bools = cfg.getParameterNamesForType<bool>();
+	bool found = find( bools.begin(), bools.end(), "checkCharge" ) != bools.end();
+	if (found) return cfg.getParameter<bool>( par );
+	// default: check charge
+	return true;
+      }
     };
-
   }
 }
 
