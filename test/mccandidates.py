@@ -18,8 +18,10 @@ process.include( "PhysicsTools/HepMCCandAlgos/data/genEventScale.cfi")
 process.add_( Service("Timing") )
 
 process.add_( Service("RandomNumberGeneratorService",
-  engineName = untracked.string("RandomNumberGeneratorService"),
-  initialSeed = untracked.uint32(1234)
+    theSource = PSet(
+      initialSeed = untracked.uint32(7893456),
+      engineName = untracked.string("HepJamesRandom")
+    )
   )
 )
 
